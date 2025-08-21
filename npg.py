@@ -14,7 +14,7 @@ import math
 import secrets
 import string
 from pathlib import Path
-from typing import Iterable, Optional, Set
+from typing import Optional, Set
 
 
 # ----------------------------
@@ -220,7 +220,8 @@ def main() -> None:
     # Entropy check
     if entropy < args.min_entropy:
         raise SystemExit(
-            f"Refusing to output secret below entropy floor: {entropy:.1f} bits < {args.min_entropy:.1f} bits. "
+            f"Refusing to output secret below entropy floor: "
+            f"{entropy:.1f} bits < {args.min_entropy:.1f} bits. "
             "Increase length/words or choose a larger alphabet/wordlist."
         )
 
