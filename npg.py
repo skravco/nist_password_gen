@@ -8,12 +8,13 @@ NIST-style random password / passphrase generator (SP 800-63B aligned)
 """
 
 from __future__ import annotations
+
 import argparse
 import math
 import secrets
 import string
 from pathlib import Path
-from typing import Iterable, Set, Optional
+from typing import Iterable, Optional, Set
 
 
 # ----------------------------
@@ -93,7 +94,9 @@ def generate_passphrase(
     if vocab < 2048:
         # Not required by NIST but recommended for meaningful entropy;
         # 2048^6 ≈ 66 bits which is solid for memorized secrets.
-        raise ValueError("Wordlist too small; supply a larger list (>= 2048 words recommended).")
+        raise ValueError(
+            "Wordlist too small; supply a larger list (>= 2048 words recommended)."
+        )
 
     chosen = [secrets.choice(words) for _ in range(num_words)]
     if capitalize:
@@ -194,7 +197,9 @@ def main() -> None:
     # Generate
     if mode == "password":
         if args.length < 8:
-            raise SystemExit("Refusing to generate: length must be at least 8 per NIST.")
+            raise SystemExit(
+                "Refusing to generate: length must be at least 8 per NIST."
+            )
         secret, entropy, alphabet = generate_password(
             length=args.length,
             allow_space=not args.no_space,
@@ -222,7 +227,9 @@ def main() -> None:
     # Optional blocklist screening
     bl = load_blocklist(args.blocklist)
     if bl and check_blocklist(secret, bl):
-        raise SystemExit("Generated secret appears in the supplied blocklist; regenerate.")
+        raise SystemExit(
+            "Generated secret appears in the supplied blocklist; regenerate."
+        )
 
     # Output (print only the secret; metadata to stderr-like note for safety is avoided here)
     print(secret)
@@ -234,4 +241,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
